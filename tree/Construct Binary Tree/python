@@ -1,0 +1,22 @@
+class Solution(object):
+    def buildTree(self, preorder, inorder):
+        if preorder is None:
+            return None
+        inMap={}
+        n=len(preorder)
+        for i in range(n):
+            inMap[inorder[i]]=i
+        def Build(preorder,inorder,preStart,preEnd,inStart,inEnd,inMap):
+            if inStart>inEnd or preStart>preEnd:
+                return None
+            rootVal=preorder[preStart]
+            root=TreeNode(rootVal)
+            inRootIdx=inMap[rootVal]
+            leftSize=inRootIdx-inStart
+            root.left=Build(preorder,inorder,preStart+1,preStart+leftSize,inStart,inRootIdx-1,inMap)
+            root.right=Build(preorder,inorder,preStart+leftSize+1,preEnd,inRootIdx+1,inEnd,inMap)
+            return root
+        
+        root=Build(preorder,inorder,0,n-1,0,n-1,inMap)
+        return root
+                
